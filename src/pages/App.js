@@ -13,7 +13,6 @@ function App() {
   const [currentRepo, setCurrentRepo] = useState('');
   const [repos, setRepos] = useState([]);
 
-
   const handleSearchRepo = async () => {
 
     const {data} = await api.get(`repos/${currentRepo}`)
@@ -36,12 +35,17 @@ function App() {
   const handleRemoveRepo = (id) => {
     console.log('Removendo registro', id);
 
-    // utilizar filter.
+	setRepos(repos.filter(repo => repo.id !== id));
   }
 
+  const handleKeyDown = (event) => {
+	if (event.key === 'Enter'){
+		handleSearchRepo();
+	}
+  }
 
   return (
-    <Container>
+    <Container onKeyDown={handleKeyDown}>
       <img src={gitLogo} width={72} height={72} alt="github logo"/>
       <Input value={currentRepo} onChange={(e) => setCurrentRepo(e.target.value)} />
       <Button onClick={handleSearchRepo}/>
